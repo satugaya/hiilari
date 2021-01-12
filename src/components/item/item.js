@@ -1,4 +1,6 @@
 import styles from './item.module.scss';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext'; //tuodaan Next-näppäin 
+
 
 function Item(props) {
     return (
@@ -11,6 +13,10 @@ function Item(props) {
                 <div className={styles.item_insuline}>4,5</div>
                 <div className={styles.item_bloodsugar}>12:00</div>
             </div>
+            <div className={styles.item_edit}>
+                <NavigateNextIcon /> {/* lisätään Nappi kunkin rivin perään */}
+            </div> 
+
         </div>
     );
 }

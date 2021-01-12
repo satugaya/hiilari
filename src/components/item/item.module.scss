@@ -1,14 +1,16 @@
+@import '../../assets/styles/_config.scss';
+
 .item {
     display: flex;
-    border-bottom: 1px solid #BADDFE;
-    color: #999999;
+    border-bottom: 1px solid $item-border;
+    color: $item-text;
 }
 
 .item_data {
     flex: 1;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    padding: 0.75rem;
+    padding: $item-padding;
 }
 
 .item_date, .item_time, .item_bloodsugar {
@@ -17,5 +19,20 @@
 
 .item_type, .item_date {
     font-weight: bold;
-    color: #000000;
+    color: $item-text-strong;
 }
+
+.item_edit {  //Next-merkin tyylit
+    max-width: $item-edit-width;
+    min-width: $item-edit-width;
+    background-color: $item-edit-background;
+    color: $item-edit-text;
+    display: none; //(tällä saadaan se, että Next-merkki näkyy vasta, kun kursori ko. merkinnän päällä (alla hover-koodaus)
+    justify-content: center;
+    align-items: center;
+}
+
+.item:hover .item_edit {
+    display: flex; //tämä kun kursori ko. kohdan päällä
+}
+
