@@ -1,0 +1,40 @@
+@import '../../assets/styles/_config.scss';
+
+.settings {
+    padding: $container-padding;
+}
+
+.settings h3 {
+    margin-top: 0.5rem;
+}
+
+.settings_types {
+    padding: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.settings_types > div {
+    padding: 0.3rem;
+    border-radius: 0.2rem;
+
+}
+//käsitellään parilliset lapsialkiot
+.settings_types > div:nth-child(odd){
+    background-color: rgba($color: #000000, $alpha: 0.1);
+}
+// värin voisi laittaa myös #rgba(0.0.0.0.1);
+
+.typeform {
+    display: flex;
+    margin-top: 0.5rem;
+}
+
+.typeform input {
+    flex: 1 1 auto; //käyttää kaiken tilan, minkä voi
+    padding: $form-input-padding;
+    border: 1px solid $form-input-border;
+    border-radius: $form-input-radius; //reunojen pyöristys
+    font-size: 1em;
+    outline: none; //ei mustaa kehysviivaa
+}
+
