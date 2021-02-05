@@ -20,8 +20,9 @@ function ItemForm(props) {
     //jos on dataa, käytetään sitä, muuten alkuarvot
     let today = new Date();
     let currentTime = today.getHours() + ':' + today.getMinutes();
+    
     const initialState = props.data ? props.data : {
-        type: "",
+        type: "Muu:",
         date: new Date().toISOString().substring(0,10),
         carbs: 50,
         time: currentTime,
@@ -30,6 +31,8 @@ function ItemForm(props) {
 
         
     };
+
+    //let sortingTime = date + currentTime;
 
     const {values, handleChange, handleSubmit} = useForm(submit, initialState, false);
 
@@ -52,8 +55,16 @@ function ItemForm(props) {
                   <div className={styles.form_row}>
                       <div>
                           <label htmlFor="type">Ruoka</label>
-                          <input type="text" name="type" onChange={handleChange} value={values.type} />
-                          {/**{ props.types.map((type) => <option key={type} value={type}>{type}</option> )}  */}   
+                          <select name="type" onChange={handleChange} value={values.type} >
+                          { props.types.map((type) => <option key={type} value={type}>{type}</option> )} 
+                          </select>  
+                      </div>
+                  </div>
+                  <div className={styles.form_row}>
+                      <div>
+                          <label htmlFor="type">Lisätiedot</label>
+                          <input type="text" name="extra" onChange={handleChange} value={values.extra} />
+                            
                       </div>
                   </div>
                   <div className={styles.form_row}>
@@ -83,13 +94,14 @@ function ItemForm(props) {
                   </div>
                   <div className={styles.form_row}>
                           <div>
-                              <label htmlFor="bloodsugar">Verensokeri</label>
+                              <label htmlFor="bloodsugar">Verensokeri (muodossa x.x)</label>
                               <input type="text" name="bloodsugar" onChange={handleChange} value={values.bloodsugar}/>
                           </div>
                           <div>
                               <label htmlFor="fiber">Kuitua</label>
                               <input type="number" name="fiber" onChange={handleChange} value={values.fiber} g />
                           </div>
+                  
 
                   </div>
                   <div className={styles.form_row}>
@@ -97,7 +109,7 @@ function ItemForm(props) {
                             <Button onClick={handleCancel}>PERUUTA</Button>
                           </div>
                           <div>
-                              <Button primary type="submit">LISÄÄ</Button>
+                              <Button primary type="submit">TALLENNA</Button>
                           </div>
                     </div>
                     {props.onItemDelete ?

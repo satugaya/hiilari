@@ -13,7 +13,7 @@
     padding: $item-padding;
 }
 
-.item_date, .item_time, .item_bloodsugar {
+.item_date, .item_time, .item_bloodsugar, .item_bloodsugar1, .item_bloodsugar2 {
     text-align: right;
     
 }
@@ -23,9 +23,20 @@
     font-weight: bold;
 }
 
+.item_bloodsugar1 {
+    color: #ffd700;
+    font-weight: bold;
+}
+
+.item_bloodsugar2 {
+    color: #b22222;
+    font-weight: bold;
+}
+
 .item_type {
     font-weight: bold;
     color: $item-text-strong;
+
 }
 
 .item_edit {  //Next-merkin tyylit

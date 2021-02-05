@@ -12,49 +12,53 @@ import test from '../../test.js';
 import AddItem from '../../routes/additem';
 import { useState, useEffect} from 'react';
 import EditItem from '../../routes/edititem';
+import { useFirestore, useFirestoreCollectionData, useUser } from 'reactfire';
+import 'firebase/firestore';
+import 'firebase/auth';
 
 function App() {
 
   const [data, setData] = useState([]);
   const [typelist, setTypelist] = useState([]); //annetaan lähtökohtaisesti tyhjä taulukko
 
+  const user = useUser();
+
+  const itemCollectionRef = useFirestore().collection('user').doc(user.data.uid).collection('item');
+ 
+
+  const { data: itemCollection } = useFirestoreCollectionData(itemCollectionRef.orderBy("date").orderBy("time"), {initialData: [], idField: "id"}); //initialdata täytyy käyttää, jos ei käytä suspenseä
+   //initialdata täytyy käyttää, jos ei käytä suspenseä
+  
+  const typeCollectionRef = useFirestore().collection('user').doc(user.data.uid).collection('type');
+  const { data: typeCollection } = useFirestoreCollectionData(typeCollectionRef.orderBy("type"), {initialData: []});
+
+
   useEffect(() => {
-    setData(test);
-    setTypelist([1, 2, 3, 4, 5, 6, 7, 8, 9])
-  }, []);
+    const types = typeCollection.map(obj => obj.type);
+    setTypelist(types);
+  }, [typeCollection]);
+  //useEffect(() => {
+  //  setData(test);
+  //  setTypelist(["pasta", "riisi"])
+  //}, []);
+
+  useEffect(() => {
+    setData(itemCollection);
+  }, [itemCollection]);
 
   const handleItemSubmit = (newitem) => {
 
     
-    let storeddata = data.slice();
-    const index = storeddata.findIndex(item => item.id === newitem.id);
-    if (index >=  0) {
-      storeddata[index] = newitem;
-    } else {
-      storeddata.push(newitem);
-    }
-    
-    storeddata.sort((a, b) => {
-      const aDate = new Date(a.date);
-      const bDate = new Date(b.date);
-      return bDate.getTime() - aDate.getTime();
-    });
-    setData(storeddata);
+    itemCollectionRef.doc(newitem.id).set(newitem);
     
   }
 
   const handleItemDelete = (id) => {
-    let storeddata = data.slice();
-    storeddata = storeddata.filter(item => item.id !==id) //jätetään ne id:t, joita ei poistettu
-    setData(storeddata);
-    alert("Poista -> " + id)
+    itemCollectionRef.doc(id).delete();
   }
 
   const handleTypeSubmit = (newtype) => {
-    let storedtypelist = typelist.slice(); //tehdään tyyppilistan kopio
-    storedtypelist.push(newtype);//lisätään listaan uusi tyyppi
-    storedtypelist.sort();
-    setTypelist(storedtypelist);
+    typeCollectionRef.doc().set({type:newtype});
   }
 
 
@@ -68,7 +72,7 @@ function App() {
               <Items data={data} />  {/* tuodaan testidata*/ }
             </Route>
             <Route path="/stats"> {/*tehdään reititys tilastoihin */}
-              <Stats />
+              <Stats data={data} />
             </Route>
             
             <Route path="/settings"> {/*tehdään reititys asetuksiin */}
